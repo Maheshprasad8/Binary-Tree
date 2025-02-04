@@ -1,0 +1,40 @@
+Given a binary tree with n nodes. Find the zig-zag level order traversal of the binary tree.
+In zig zag traversal starting from the first level go from left to right for odd-numbered levels and right to left for even-numbered levels.
+
+........................................................
+
+class Solution{
+    public:
+    //Function to store the zig zag order traversal of tree in a list.
+    vector <int> zigZagTraversal(Node* root)
+    {
+       vector<int>ans;
+       queue<Node*>q;
+       if(root==NULL){
+           return ans;
+       }
+       q.push(root);
+       bool leftToright=true;
+       while(!q.empty()){
+           int n=q.size();
+           vector<int>level(n);
+           for(int i=0;i<n;i++){
+               Node* frontNode=q.front();
+               q.pop();
+               int index=leftToright ? i:n-i-1;
+               level[index]=frontNode->data;
+               if(frontNode->left){
+                   q.push(frontNode->left);
+               }
+               if(frontNode->right){
+                   q.push(frontNode->right);
+               }
+           }
+           for(auto i:level){
+               ans.push_back(i);
+           }
+           leftToright = !leftToright;  //change the direction
+       }
+       return ans;
+    }
+};
