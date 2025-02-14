@@ -1,0 +1,41 @@
+Given the root of a Binary search tree(BST), where exactly two nodes were swapped by mistake.
+Your task is to fix (or correct) the BST by swapping them back. Do not change the structure of the tree.
+Note: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong. 
+All changes must be reflected in the original Binary search tree(BST)
+
+........................................................................inorder.................................
+
+class Solution {
+  public:
+  Node *first,*middle,*last,*prev;
+  void inorder(Node* root){
+      if(!root){
+          return;
+      }
+      inorder(root->left);
+      if(prev && root->data<prev->data){
+          if(!first){
+              first=prev;
+              middle=root;
+          }
+          else{
+          last=root;
+      }
+      }
+      prev=root;
+      inorder(root->right);
+      
+  }
+    void correctBST(Node* root) {
+      first=middle=last=prev=NULL;
+      inorder(root);
+    //   swap the incorrect node
+    if(first && last){
+        swap(first->data,last->data);
+    }
+        
+        else if(first && middle){
+            swap(first->data,middle->data);
+        }
+    }
+};
