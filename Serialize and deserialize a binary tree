@@ -1,0 +1,45 @@
+Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions
+
+serialize() : stores the tree into an array a and returns the array.
+deSerialize() : deserializes the array to the tree and returns the root of the tree.
+Note: Multiple nodes can have the same data and the node values are always positive integers. 
+Your code will be correct if the tree returned by deSerialize(serialize(input_tree)) is same as the input tree. 
+Driver code will print the in-order traversal of the tree returned by deSerialize(serialize(input_tree)).
+......................................................................................................................
+
+
+class Solution {
+  public:
+  void TreeToarr(Node* root,vector<int>&ans){
+      if(root==NULL){
+          return;
+      }
+      TreeToarr(root->left,ans);
+      ans.push_back(root->data);
+      TreeToarr(root->right,ans);
+  }
+  Node* solve(vector<int>&arr,int l,int r){
+      if(l>r){
+          return NULL;
+      }
+      int mid=l+(r-l)/2;
+      Node* root=new Node(arr[mid]);
+      root->left=solve(arr,l,mid-1);
+      root->right=solve(arr,mid+1,r);
+      return root;
+  }
+    // Function to serialize a tree and return a list containing nodes of tree.
+    vector<int> serialize(Node *root) {
+      vector<int>ans;
+      TreeToarr(root,ans);
+       return ans;
+    }
+
+    // Function to deserialize a list and construct the tree.
+    Node *deSerialize(vector<int> &arr) {
+       if(arr.empty()){
+           return NULL;
+       }
+       return solve(arr,0,arr.size()-1);
+    }
+};
