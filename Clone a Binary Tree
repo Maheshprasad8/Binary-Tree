@@ -1,0 +1,47 @@
+A special binary tree with random pointers along with the usual left and right pointers is given. Clone the given tree.
+
+Note: The output is 1 if the tree is cloned successfully. Otherwise, the output is 0.
+
+.......................................................
+
+
+class Solution {
+  public:
+    /* The function should clone the passed tree and return
+       root of the cloned tree */
+       Node* copyleftToright(Node* root,unordered_map<Node*,Node*>&mp){
+           if(root==NULL){
+               return NULL;
+           }
+           Node* cloneNode=new Node(root->data);
+           mp[root]=cloneNode;
+           cloneNode->left=copyleftToright(root->left,mp);
+           cloneNode->right=copyleftToright(root->right,mp);
+           return cloneNode;
+       }
+       void copyRandom(Node* root,unordered_map<Node*,Node*>&mp){
+           if(root==NULL){
+               return;
+           }
+           mp[root]->random=mp[root->random];
+           copyRandom(root->left,mp);
+           copyRandom(root->right,mp);
+       }
+       
+    Node* cloneTree(Node* root) {
+       
+       if(root==NULL){
+           return NULL;
+       }
+      
+      unordered_map<Node*,Node*>mp;
+      Node* newTree=copyleftToright(root,mp);
+      copyRandom(root,mp);
+      return newTree;
+      
+      
+ }
+};
+
+
+
